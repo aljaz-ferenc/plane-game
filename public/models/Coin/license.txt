@@ -1,0 +1,11 @@
+Model Information:
+* title:	Toon Coin Star
+* source:	https://sketchfab.com/3d-models/toon-coin-star-114200814b31479e826a8b1199922477
+* author:	arifsen54 (https://sketchfab.com/arifsen54)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Toon Coin Star" (https://sketchfab.com/3d-models/toon-coin-star-114200814b31479e826a8b1199922477) by arifsen54 (https://sketchfab.com/arifsen54) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

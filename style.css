@@ -1,0 +1,21 @@
+body{
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.modal-start, .modal-over{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.modal-start__start-btn{
+  display: none;
+}
+
+.modal-over{
+display: none;
+}
