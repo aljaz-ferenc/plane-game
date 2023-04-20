@@ -40,7 +40,7 @@ let planeIsLoaded = false
 const gltfLoader = new GLTFLoader()
 let planeMixer = null
 let plane = null
-gltfLoader.load('public/models/Plane1/scene2.gltf', (gltf) => {
+gltfLoader.load('./models/Plane1/scene2.gltf', (gltf) => {
   plane = gltf.scene
   scene.add(plane)
   planeMixer = new THREE.AnimationMixer(plane)
@@ -50,7 +50,7 @@ gltfLoader.load('public/models/Plane1/scene2.gltf', (gltf) => {
 })
 
 let sky = null
-gltfLoader.load('public/models/Sky/scene.gltf', (gltf) => {
+gltfLoader.load('./models/Sky/scene.gltf', (gltf) => {
   sky = gltf.scene
   sky.scale.x = 20
   sky.scale.y = 20
@@ -70,7 +70,7 @@ let planePosition = null
 
 function renderCoin() {
   if (numberOfCoins < 5) {
-    gltfLoader.load('public/models/Coin/scene.gltf', (gltf) => {
+    gltfLoader.load('./models/Coin/scene.gltf', (gltf) => {
       const coin = gltf.scene
       coin.scale.x = 0.05
       coin.scale.y = 0.05
