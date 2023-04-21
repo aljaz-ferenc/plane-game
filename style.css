@@ -12,10 +12,123 @@ body{
   text-align: center;
 }
 
+.modal-start{
+  background-image: linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('./public/background.webp');
+background-size: cover;
+background-position: center;
+width: 100%;
+height: 100%;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+padding-top: 25rem;
+align-items: center;
+}
+
+.modal-start h1, .modal-over__heading{
+  color: #fff;
+  font-size: 5rem;
+  font-style: italic;
+}
+
 .modal-start__start-btn{
   display: none;
+  font-size: 3rem;
+  padding: 1rem 3rem;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: rgb(201, 201, 201);
+  transition: all 2s;
+}
+
+.modal-start__start-btn:hover,
+.modal-over__play-again-btn:hover{
+  color: #fff;
+  background-color: rgb(142, 142, 142);
+}
+
+.score{
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  color: #fff;
 }
 
 .modal-over{
 display: none;
+width: 100%;
+height: 100%;
+background-image: linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+flex-direction: column;
+color: #fff;
+justify-content: center;
+align-items: center;
+border: 1px solid red;
+opacity: 0;
+transition: all .5s;
+}
+
+.modal-over__heading{
+  padding: 0;
+  margin: 0;
+}
+
+.modal-over__play-again-btn{
+  font-size: 3rem;
+  padding: 1rem 3rem;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: rgb(201, 201, 201);
+  transition: all .2s;
+  margin-top: 5rem;
+}
+
+.modal-over__score{
+  font-size: 2rem;
+}
+
+.keyboard{
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  gap: 2rem;
+  text-align: center;
+  color: #fff;
+  display: none;
+}
+
+.arrow{
+  width: 50px;
+  height: 50px;
+  background-color: #a4a4a4;
+}
+
+.up{
+  transform: translate(calc(100% + .5rem), -.5rem);
+}
+
+.bottom-row{
+  display: flex;
+  gap: .5rem;
+}
+
+.space{
+  width: 250px;
+  height: 50px;
+}
+
+.key{
+  border-radius: 5px;
+  background-color: #ffffff50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
 }

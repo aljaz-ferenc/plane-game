@@ -1,17 +1,25 @@
 import './style.css'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 const startBtn = document.querySelector('.modal-start__start-btn')
 const loadingScreen = document.querySelector('.modal-start__loading')
-const modal = document.querySelector('.modal-start')
-// const modalOver = document.querySelector('.modal-over')
-// const playAgainBtn = document.querySelector('.modal-over__play-again-btn')
+const modalStart = document.querySelector('.modal-start')
+const keyboard = document.querySelector('.keyboard')
+const modalOver = document.querySelector('.modal-over')
+const score = document.querySelector('.modal-over__score')
+const playAgainBtn = document.querySelector('.modal-over__play-again-btn')
+
+document.body.style.display = 'none'
 
 startBtn.addEventListener('click', () => {
-  modal.style.display = 'none'
+  keyboard.style.display = 'block'
+  modalStart.style.display = 'none'
   animate()
+})
+
+playAgainBtn.addEventListener('click', () => {
+  resetGame()
 })
 
 const sizes = {
@@ -55,21 +63,21 @@ gltfLoader.load('./models/Sky/scene.gltf', (gltf) => {
   sky.scale.x = 20
   sky.scale.y = 20
   sky.scale.z = 20
-  sky.position.z = -8
+  sky.position.z = -800
   scene.add(sky)
   if (planeIsLoaded) {
     startBtn.style.display = 'inline'
     loadingScreen.style.display = 'none'
+    document.body.style.display = 'block'
   }
 })
 
-
-const coins = []
+let coins = []
 
 let planePosition = null
 
 function renderCoin() {
-  if (numberOfCoins < 5) {
+  if (numberOfCoins < totalCoins) {
     gltfLoader.load('./models/Coin/scene.gltf', (gltf) => {
       const coin = gltf.scene
       coin.scale.x = 0.05
@@ -77,14 +85,13 @@ function renderCoin() {
       coin.scale.z = 0.05
       coins.push(coin)
       coin.position.z = planePosition - 100
-      coin.position.x = (Math.random() - 0.5) * 8
-      coin.position.y = Math.random() * 6
+      coin.position.x = (Math.random() - 0.5) * 15
+      coin.position.y = (Math.random() - 0.5) * 5
       scene.add(coin)
       numberOfCoins++
     })
   }
 }
-
 
 const floorGeometry = new THREE.PlaneGeometry(10, 500, 2, 2)
 const floorMaterial = new THREE.MeshStandardMaterial({ color: 0x0055ff })
@@ -121,6 +128,7 @@ let movePlaneUp = false
 let movePlaneDown = false
 let movePlaneLeft = false
 let movePlaneRight = false
+const totalCoins = 10
 
 window.addEventListener('keydown', (e) => {
   switch (e.code) {
@@ -162,14 +170,15 @@ window.addEventListener('keyup', (e) => {
       break;
   }
 })
-let gameStatus = 'playing'
+let gameStatus = 'start'
 
 let collisions = 0
 let numberOfCoins = 0
+let missed = 0
+
 function animate() {
   const elapsedTime = clock.getElapsedTime()
   renderer.render(scene, camera)
-  // controls.update()
   const frames = requestAnimationFrame(animate)
   coins.forEach(coin => {
     coin.rotation.y += 0.05
@@ -180,26 +189,54 @@ function animate() {
     movePlane()
   }
 
-  if (coins.length < 3 && frames % 100 === 0) {
+  if (frames % 100 === 0) {
     renderCoin()
   }
   if (planeMixer) {
     planeMixer.update(elapsedTime)
   }
-  if(gameStatus === 'playing'){
+  if (gameStatus === 'playing') {
     checkGameStatus()
-  }else{
-    modalOver.style.display = 'block'
 
+  } else if (gameStatus === 'over') {
+    gameOver()
   }
-  gameStatus = frames > 200 && coins.length === 0 ? 'over' : 'playing'
+  gameStatus = missed + collisions === totalCoins ? 'over' : 'playing'
+  if (gameStatus === 'playing') {
+    modalOver.style.display = 'none'
+  }
 }
 
+function gameOver() {
+  if (gameStatus === 'over') {
+    modalOver.style.display = 'flex'
+    modalOver.style.opacity = 1
+    keyboard.style.display = 'none'
+    score.textContent = `Your score: ${collisions}/${totalCoins}`
+  }
+}
+
+function resetGame() {
+  if (gameStatus === 'over') {
+    gameStatus === 'playing'
+    modalOver.style.display = 'none'
+    coins = []
+    plane.position.z = 0
+    plane.position.x = 0
+    plane.position.y = 0
+    camera.position.z = 12
+    camera.position.y = 2
+    sky.position.z = -800
+    numberOfCoins = 0
+    missed = 0
+    collisions = 0
+  }
+}
 
 function movePlane() {
   plane.position.z -= 0.3
   planePosition = plane.position.z
-  if(gameStatus === 'playing'){
+  if (gameStatus === 'playing') {
     camera.position.z -= 0.3
   }
   if (movePlaneUp && plane.rotation.x > 0.3) {
@@ -270,7 +307,8 @@ function detectCollision(box1, box2) {
     collisions += 1
     removeCoin(box2)
   }
-  if (coinBbox.min.z > planeBbox.max.z + 1) {
+  if (coinBbox.min.z > planeBbox.max.z + 10) {
+    missed += 1
     removeCoin(box2)
   }
 }
@@ -280,7 +318,7 @@ function removeCoin(coin) {
   coins.shift()
 }
 
-function checkGameStatus(){
+function checkGameStatus() {
   gameStatus = coins.length > 0 ? 'playing' : 'over'
 }
 
